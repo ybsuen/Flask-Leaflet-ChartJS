@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="en"><head> <meta charset="utf-8" />
+ <title>Data Visualization Demo in Flask, Leaflet and ChartJS</title>
+
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/css/jumbotron-narrow.css" rel="stylesheet">
+    <script src="../static/js/jquery-1.11.2.js"></script>
+    <script src="../static/js/Chart.min.js"></script>
+ </head>
+ <body> 
+    <div class="container">
+      <div class="header">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation"><a href="/">Home</a></li>
+            <li role="presentation"><a href="/chart4">Map</a></li>
+            <li role="presentation"><a href="/chart">Bar Chart</a></li>
+            <li role="presentation" class="active"><a href="/chart2">Line Chart</a></li>
+            <li role="presentation"><a href="/chart3">Pie Chart</a></li>
+          </ul>
+        </nav>
+        <h3 class="text-muted">Flask Leaflet ChartJS</h3>
+      </div>
+    <canvas id="chart" width="600" height="400"></canvas>
+ <footer class="footer">
+         <p>&copy; Vizualization Demo</p>
+ </footer>
+<script>
+ 
+   // bar chart data
+   var chartData = {
+   labels : [{% for item in labels %}
+                  "{{item}}",
+              {% endfor %}],
+   datasets : [
+      {
+            label: '{{legend}}',
+            fillColor: "rgba(151,187,205,0.2)",
+            strokeColor: "rgba(151,187,205,1)",
+            pointColor: "rgba(151,187,205,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(151,187,205,1)",
+            bezierCurve : false,
+            data : [{% for item in values %}
+                      {{item}},
+                    {% endfor %}]
+      }]
+   }
+ 
+    Chart.defaults.global.animationSteps = 50;
+    Chart.defaults.global.tooltipYPadding = 16;
+    Chart.defaults.global.tooltipCornerRadius = 0;
+    Chart.defaults.global.tooltipTitleFontStyle = "normal";
+    Chart.defaults.global.tooltipFillColor = "rgba(0,0,0,0.8)";
+    Chart.defaults.global.animationEasing = "easeOutBounce";
+    Chart.defaults.global.responsive = false;
+    Chart.defaults.global.scaleLineColor = "black";
+    Chart.defaults.global.scaleFontSize = 16;
+ 
+   // get line chart canvas
+   var ctx = document.getElementById("chart").getContext("2d");
+ 
+   steps = 10
+   max = 40
+   
+   var LineChartDemo = new Chart(ctx).Line(chartData, {
+        scaleOverride: true,
+        scaleSteps: steps,
+        scaleStepWidth: Math.ceil(max / steps),
+        scaleStartValue: 0,
+        scaleShowVerticalLines: true,
+        scaleShowGridLines : true,
+        barShowStroke : true,
+        scaleShowLabels: true,
+        bezierCurve: false,
+ 
+   });
+   
+</script>
+</body>
+</html>
